@@ -47,16 +47,19 @@ def send_request(socket_obj, request):
 def display_response(response):
     """
     Displays server responses in a readable format.
+    Ensures Unicode characters (like –) display properly.
     """
     print("\n--- Server Response ---")
     print(f"Status: {response['status']}")
 
     if response["status"] == "OK":
-        print(json.dumps(response["data"], indent=2))
+        # ensure_ascii=False allows proper display of Unicode characters
+        print(json.dumps(response["data"], indent=2, ensure_ascii=False))
     else:
         print("Error:", response["error"])
 
     print("------------------------\n")
+
 
 
 def main():
