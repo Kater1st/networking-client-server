@@ -1,51 +1,40 @@
-Project Title
 
-Multi-Service Client–Server Networking Application
+Networking Module - README
+Tinashe Allan Katenaire
 
 Overview
+This project demonstrates the design and implementation of a networked client–server application using Python. The goal of the project was to deepen my understanding of how computers communicate over a network using the TCP/IP stack, structured message formats, and a clearly defined communication protocol.
 
-This project demonstrates a client–server networking application built using Python and TCP sockets. The goal of the project is to show an understanding of how two computers (or two programs) communicate over a network using a defined protocol, structured messages, and a request–response model.
+The software consists of two separate programs: a server and a client. The server listens for incoming connections on a specific port and processes requests from connected clients. The client connects to the server, sends structured requests, and displays the responses returned by the server. Communication between the client and server is performed using JSON-formatted messages transmitted over a TCP connection.
 
-The application consists of two separate programs:
+To use the software, the server must be started first so that it begins listening for client connections. Once the server is running, the client can be started in a separate terminal. The client presents a menu that allows the user to send different types of requests to the server and view the responses.
 
-server.py – Listens for client connections and processes requests
+The purpose of writing this software was to practice building reliable networked applications, design a simple but effective communication protocol, and gain hands-on experience with sockets, ports, and request–response communication patterns that are commonly used in real-world software systems.
 
-client.py – Connects to the server, sends requests, and displays responses
+Software Demo Video:
+https://youtu.be/XdChlbPpYdI
 
-The client and server communicate using JSON-formatted messages sent over a TCP connection.
+Network Communication
+The software uses a client–server architecture. In this model, the server waits for incoming connections and can handle requests from multiple clients, while the client initiates communication by sending requests and waiting for responses.
 
-Networking Concepts Demonstrated
+The application uses TCP (Transmission Control Protocol) to ensure reliable and ordered delivery of data between the client and server. The server listens on port 5050, and the client connects to this port to establish communication.
 
-This project demonstrates the following networking concepts:
+Messages exchanged between the client and server are formatted using JSON. Each request sent by the client includes a request type, a unique request identifier, and a payload containing any necessary data. The server responds with a JSON object that includes the same request identifier, a status indicating success or failure, and either response data or an error description. Messages are sent using newline-delimited JSON to clearly separate individual requests and responses.
 
-Client–Server architecture
+OSI Model Alignment
+This project demonstrates multiple layers of the OSI model in a practical implementation. At the application layer, the client and server communicate using a structured JSON-based protocol that defines request and response formats. At the transport layer, TCP is used to provide reliable, ordered, and error-checked delivery of messages. The network layer enables communication between devices using IP addressing and port numbers. Together, these layers allow structured data to be transmitted from the client, processed by the server, and returned in a predictable and consistent format.
 
-TCP communication
+Communication Protocol Specification
+All messages in this system follow a defined request–response protocol using JSON. Each message is transmitted as a single JSON object followed by a newline character to indicate message boundaries.
 
-Sockets and ports
-
-Request–response protocol design
-
-Structured message formats (JSON)
-
-Reading data from a local file over a network
-
-Error handling and validation
-
-These concepts align with the OSI model, where application data is structured at the application layer and transmitted reliably using the transport layer (TCP).
-
-Communication Protocol
-
-All communication between the client and server uses newline-delimited JSON. Each message is sent as a single JSON object followed by a newline character (\n).
-
-Request Format (Client → Server)
+Request Format:
 {
   "type": "REQUEST_TYPE",
   "request_id": "unique-id",
   "payload": {}
 }
 
-Response Format (Server → Client)
+Response Format:
 {
   "request_id": "unique-id",
   "status": "OK | ERROR",
@@ -53,77 +42,37 @@ Response Format (Server → Client)
   "error": null
 }
 
-Supported Request Types
-1. ECHO
+The protocol supports the following request types:
+- ECHO – Sends a message to the server and receives the same message in the response
+- SYSTEM_INFO – Requests server metadata such as server name, time, and active client count
+- FILE_QUERY – Requests data from a local JSON file hosted on the server
+- HELP – Returns a list of supported request types
 
-The client sends a message and the server responds by echoing the same message back.
+Development Environment
+The software was developed using Visual Studio Code as the primary code editor and Git/GitHub for version control and source code management. The programs were tested locally by running the client and server in separate terminal windows.
 
-2. SYSTEM_INFO
+The application was written in Python, using only standard libraries. The socket library was used to implement TCP networking, the json library was used to format and parse structured messages, and the threading library was used on the server to allow multiple clients to connect simultaneously.
 
-The server returns system-related information such as:
+Testing and Validation
+The system was tested using multiple test cases to verify correct behavior and reliability. These tests included sending valid requests for each supported request type and verifying that the server returned structured and accurate responses. Error-handling tests were also performed by sending invalid or unsupported requests, as well as requesting missing keys in the local data file, to ensure the server returned appropriate error messages without crashing.
 
-Server name
+Security Considerations
+This implementation focuses on core networking concepts and does not include authentication or encrypted communication. In a production environment, this system could be extended to use secure transport mechanisms such as TLS to protect data in transit and authentication mechanisms to restrict access to authorized clients. Input validation on the server helps reduce the risk of malformed or malicious requests.
 
-Current server time
+Useful Websites
+Python Socket Programming Documentation: https://docs.python.org/3/library/socket.html
+TCP/IP and Client–Server Model – Wikipedia: https://en.wikipedia.org/wiki/Client%E2%80%93server_model
+OSI Model Overview – Wikipedia: https://en.wikipedia.org/wiki/OSI_model
+JSON Format Documentation: https://www.json.org/json-en.html
 
-Number of active client connections
+Future Work
+- Implement TLS encryption to secure communication between the client and server
+- Add user authentication and access control for client connections
+- Develop a graphical user interface (GUI) for improved usability
+- Extend the protocol to support file transfer and data modification requests
+- Deploy the server to a cloud environment for remote client access
 
-3. FILE_QUERY
-
-The server reads data from a local JSON file (data.json) and returns the requested value based on a provided key.
-
-This request type demonstrates obtaining information from a local file in response to a network request.
-
-4. HELP
-
-Returns a list of all supported request types and how they can be used.
-
-Local Data File
-
-The server uses a local file named data.json to support the FILE_QUERY request type. This file contains key–value pairs that can be requested by the client.
-
-How to Run the Project
-Requirements
-
-Python 3.x
-
-No external libraries required
-
-Steps
-
-Start the server:
-
-python server.py
-
-
-In a separate terminal, start the client:
-
-python client.py
-
-
-Use the interactive menu in the client to send different request types to the server.
-
-Error Handling
-
-The server validates all incoming requests and returns structured error responses when:
-
-JSON is invalid
-
-A request type is unknown
-
-Required fields are missing
-
-A requested key is not found
-
-This ensures reliable and predictable communication between the client and server.
-
-Demo Video
-
-A demonstration video showing the application running, a walkthrough of the code, and an explanation of the networking concepts is available at the following link:
-
-[Insert your YouTube video link here]
 
 Author
 
 Tinashe Allan Katenaire
-CSE 310 – Applied Programming
