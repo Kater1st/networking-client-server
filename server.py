@@ -21,7 +21,7 @@ import platform
 from datetime import datetime, timezone
 
 HOST = "0.0.0.0"   # Listen on all network interfaces
-PORT = 5050        # You can change this if needed
+PORT = 5050        # Port to listen on
 SERVER_NAME = "Tinashe-NetServer"
 DATA_FILE = "data.json"
 
